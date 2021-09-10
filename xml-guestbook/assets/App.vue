@@ -77,7 +77,7 @@ export default {
 
             const data = await GuestbookAPIService.replyMessage(id, author, text)
             const date = new Date().toLocaleDateString(['ru-RU'],{month: '2-digit', day: '2-digit', year: '2-digit'})
-            if (path == '') {
+            if (path == '' && id == '') {
                 this.messages[data.id.toString()] = {
                     id: data.id,
                     author: author,

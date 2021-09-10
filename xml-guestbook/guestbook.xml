@@ -2,16 +2,10 @@
 <guestbook>
     <config>
         <id>1</id>
-        <messages>45</messages>
+        <messages>64</messages>
     </config>
     <messages>
-        <message>
-            <id>7</id>
-            <repliedTo/>
-            <published>12.12.14</published>
-            <author>Kittie</author>
-            <text>Hello Kittie22dsf</text>
-        </message>
         
-    <message><id>38</id><repliedTo>7</repliedTo><published>10.09.2021</published><author>Roumena</author><text>Hello, glad to hear you dear</text></message><message><id>39</id><repliedTo>38</repliedTo><published>10.09.2021</published><author>Kittie</author><text>Oh my... so long time of silence</text></message><message><id>45</id><repliedTo>0</repliedTo><published>10.09.2021</published><author>Thomas</author><text>Who's there?</text></message></messages>
+        
+    <message><id>62</id><repliedTo>0</repliedTo><published>10.09.2021</published><author>Gul'dan</author><text>Hello poor people</text></message><message><id>63</id><repliedTo>62</repliedTo><published>10.09.2021</published><author>Mithrandir</author><text>Go away!</text></message><message><id>64</id><repliedTo>63</repliedTo><published>10.09.2021</published><author>Gu'dan</author><text>No!</text></message></messages>
 </guestbook>
