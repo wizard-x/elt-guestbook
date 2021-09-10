@@ -1,4 +1,4 @@
-# Map Suggest
+# XML Guestbook
 
 ## Prerequisites
 ```
