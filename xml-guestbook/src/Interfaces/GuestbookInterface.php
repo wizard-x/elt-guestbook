@@ -8,4 +8,5 @@ interface GuestbookInterface {
     public function getPartialMessages(int $page=0, int $limit=10): array;
     public function appendReply(MessageDTO $message): int;
     public function deleteMessage(int $id): void;
+    public function updateMessage(int $id, string $text): void;
 }

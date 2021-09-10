@@ -7,6 +7,7 @@
                     :path="path"
                     @delete-message="deleteMessage"
                     @send-message="sendMessage"
+                    @update-message="updateMessage"
                 />
                 <message-list
                     v-if="Object.keys(message.replies).length > 0"
@@ -14,6 +15,7 @@
                     :path="path=='' ? message.id : path + '-' + message.id"
                     @delete-message="deleteMessage"
                     @send-message="sendMessage"
+                    @update-message="updateMessage"
                 />
             </li>
         </ul>
@@ -45,7 +47,10 @@ export default {
         },
         sendMessage(id, path) {
             this.$emit('send-message', id, path)
-        }
+        },
+        updateMessage(id, path) {
+            this.$emit('update-message', id, path)
+        },
     },
     mounted() {
         this.$bus.$on('updateUI', event => {

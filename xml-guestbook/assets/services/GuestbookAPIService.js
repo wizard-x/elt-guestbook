@@ -50,5 +50,22 @@ export default {
             .finally( () => {
 
             })
+    },
+
+    async updateMessage(id, text) {
+        const payload = {
+            id: id,
+            text: text,
+        }
+        return axios.patch(APIUrl, payload)
+            .then( (response) => {
+                return response.data
+            })
+            .catch( (error) => {
+                console.log('guestbook api service/update', error)
+            })
+            .finally( () => {
+
+            })
     }
 }

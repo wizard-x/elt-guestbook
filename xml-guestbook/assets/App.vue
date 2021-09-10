@@ -5,13 +5,36 @@
         <v-app-bar app>
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title>XML Guestbook</v-toolbar-title>
+            <v-icon class="mx-6">mdi-heart</v-icon>
+            <v-btn small @click="show = !show"><v-icon>mdi-comment-send-outline</v-icon>Написать новое сообщение</v-btn>
+
         </v-app-bar>
         <v-main>
             <v-container>
+                <v-expand-transition>
+                    <v-container>
+                        <div v-show="show" class="grey lighten-5">
+                            <v-card-text>
+                                <v-text-field label="Введите свое имя" outlined :id="'author-'">
+                                </v-text-field>
+                                <v-textarea label="Текст сообщения" outlined :id="'text-'">
+                                </v-textarea>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn small
+                                    @click="sendMessage('', '')"
+                                >
+                                    <v-icon>mdi-comment-send-outline</v-icon>Отправить</v-btn>
+                            </v-card-actions>
+                            <v-divider></v-divider>
+                        </div>
+                    </v-container>
+                </v-expand-transition>
                 <message-list
                     :messages='messages'
                     @delete-message="deleteMessage"
                     @send-message="sendMessage"
+                    @update-message="updateMessage"
                 />
             </v-container>
         </v-main>
@@ -31,6 +54,7 @@ export default {
         return {
             messages: {},
             drawer: false,
+            show: true,
         }
     },
 
@@ -41,12 +65,7 @@ export default {
 
     methods: {
         async deleteMessage(id, path) {
-            var indexes = path.split('-')
-            var tmp = this.messages
-            while (indexes.length > 0) {
-                var index = indexes.shift()
-                tmp = (index.length > 0) ? tmp[index].replies : tmp
-            }
+            var tmp = this.findMessageByPath(path)
             delete(tmp[id])
             this.$bus.$emit('updateUI')
             GuestbookAPIService.deleteMessage(id)
@@ -55,20 +74,31 @@ export default {
         async sendMessage(id, path) {
             const text = document.getElementById('text-'+id).value
             const author = document.getElementById('author-'+id).value
-            console.log(id, path, author, text)
 
-            const tmp = this.findMessageByPath(path)
             const data = await GuestbookAPIService.replyMessage(id, author, text)
-            if (Object.keys(tmp[id].replies) == 0) {
-                tmp[id].replies = {}
-            }
-            tmp[id].replies[data.id.toString()] = {
-                id: data.id,
-                author: author,
-                repliedTo: id > 0 ? id : '',
-                replies: {},
-                published: new Date().toLocaleDateString(['ru-RU'],{month: '2-digit', day: '2-digit', year: '2-digit'}),
-                text: text,
+            const date = new Date().toLocaleDateString(['ru-RU'],{month: '2-digit', day: '2-digit', year: '2-digit'})
+            if (path == '') {
+                this.messages[data.id.toString()] = {
+                    id: data.id,
+                    author: author,
+                    repliedTo: '',
+                    replies: {},
+                    published: date,
+                    text: text,
+                }
+            } else {
+                const tmp = this.findMessageByPath(path)
+                if (Object.keys(tmp[id].replies) == 0) {
+                    tmp[id].replies = {}
+                }
+                tmp[id].replies[data.id.toString()] = {
+                    id: data.id,
+                    author: author,
+                    repliedTo: id > 0 ? id : '',
+                    replies: {},
+                    published: date,
+                    text: text,
+                }
             }
             this.$bus.$emit('updateUI')
             const _update = setInterval(()=>{
@@ -86,6 +116,11 @@ export default {
                     }, 1000)
                 }  
             }, 200)
+        },
+
+        async updateMessage(id, path) {
+            const text = document.getElementById('message-'+id).value
+            const data = await GuestbookAPIService.updateMessage(id, text)
         },
 
         findMessageByPath(path) {

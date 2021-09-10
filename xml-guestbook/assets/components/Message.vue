@@ -7,11 +7,19 @@
             {{ message.published }}
         </v-card-subtitle>
         <v-card-text>
-            {{ message.id}} : {{ message.text }}
+            <v-textarea :value="message.text" @input="changed=true" :id="'message-'+message.id"></v-textarea>
         </v-card-text>
         <v-card-actions>
             <v-btn small :data-id="message.id" @click="show = !show"><v-icon>mdi-comment-edit-outline</v-icon>Ответить</v-btn>
-            <v-btn small :data-id="message.id"><v-icon>mdi-pencil-outline</v-icon>Редактировать</v-btn>
+            <v-btn small
+                :data-id="message.id"
+                :data-path="path"
+                :disabled="!changed"
+                @click="updateMessage"
+            >
+                <v-icon>mdi-pencil-outline</v-icon>
+                Обновить
+            </v-btn>
             <v-btn small
                 :data-id="message.id"
                 :data-path="path"
@@ -59,6 +67,7 @@ export default {
     data() {
         return {
             show: false,
+            changed: false,
         }
     },
     methods: {
@@ -67,7 +76,11 @@ export default {
         },
         sendMessage(event) {
             this.$emit('send-message', event.currentTarget.getAttribute('data-id'), event.currentTarget.getAttribute('data-path'))
-            this.show = !this.show
+            this.show = false
+        },
+        updateMessage(event) {
+            this.$emit('update-message', event.currentTarget.getAttribute('data-id'), event.currentTarget.getAttribute('data-path'))
+            this.changed = false
         }
     },
     mounted() {

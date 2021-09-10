@@ -36,6 +36,12 @@ class XMLGuestbookParser implements GuestbookParserInterface {
         return 0;
     }
 
+    public function deleteMessage(int $id): void {
+    }
+
+    public function updateMessage(int $id, string $text): void {
+    }
+
     protected function substituteEmptyObjectsByNull(array $node): array {
         return array_reduce(array_keys($node), function($carry, $key) use ($node) {
             $carry[$key] = empty($node[$key]) ? null : $node[$key];

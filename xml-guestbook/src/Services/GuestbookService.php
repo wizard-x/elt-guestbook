@@ -12,7 +12,7 @@ class GuestbookService implements GuestbookInterface {
     }
 
     public function getMessagesCount(): int {
-        return 2;
+        return 0;
     }
 
     public function getAllMessages(): array {
@@ -27,7 +27,11 @@ class GuestbookService implements GuestbookInterface {
         (new SimpleXMLGuestbookParser())->open($this->xml_filename)->deleteMessage($id);
     }
 
+    public function updateMessage(int $id, String $text): void {
+        (new SimpleXMLGuestbookParser())->open($this->xml_filename)->updateMessage($id, $text);
+    }
+
     public function getPartialMessages(int $page=0, int $limit=10): array {
-        return [4,5,6];
+        return [];
     }
 }

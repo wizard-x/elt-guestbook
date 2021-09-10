@@ -54,7 +54,9 @@ class GuestbookAPIController extends AbstractController {
     }
 
     private function _patch(Request $request, GuestbookService $service): Response {
-        return new Response('This is PATCH§');
+        $data = json_decode($request->getContent(), true);
+        $service->updateMessage((int)$data['id'], htmlspecialchars($data['text']));
+        return $this->json('{success: true}', Response::HTTP_OK);
     }
 
     private function _delete(Request $request, GuestbookService $service): Response {

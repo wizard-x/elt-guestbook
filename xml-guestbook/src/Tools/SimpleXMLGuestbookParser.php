@@ -78,6 +78,15 @@ class SimpleXMLGuestbookParser implements GuestbookParserInterface {
         $xml->asXML($this->filename);
     }
 
+    public function updateMessage(int $id, string $text): void {
+        $xml = \simplexml_load_file($this->filename);
+        $found = $xml->xpath('//messages/message[id="'.$id.'"]');
+        if (count($found)) {
+            $found[0]->text = $text;
+        }
+        $xml->asXML($this->filename);
+    }
+
     protected function substituteEmptyObjectsByNull(array $node): array {
         return array_reduce(array_keys($node), function($carry, $key) use ($node) {
             $carry[$key] = empty($node[$key]) ? null : $node[$key];
