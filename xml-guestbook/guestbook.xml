@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<guestbook>
+    <config>
+        <id>1</id>
+        <messages>37</messages>
+    </config>
+    <messages>
+        <message>
+            <id>7</id>
+            <repliedTo/>
+            <published>12.12.14</published>
+            <author>Kittie</author>
+            <text>Hello Kittie</text>
+        </message>
+        <message>
+            <id>8</id>
+            <repliedTo/>
+            <published>12.12.14</published>
+            <author>Kittie</author>
+            <text>Hello Kittie</text>
+        </message>
+    </messages>
+</guestbook>

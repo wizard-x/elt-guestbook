@@ -1,0 +1,22 @@
+# This image has separated modules for fastcgi and cli
+# versions of php
+#
+FROM php:7.4.22-alpine
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache php7-pear php7-dev postgresql-dev gcc musl-dev make && \
+    apk add --no-cache php7-fpm php7-iconv php7-ctype php7-pdo php7-session php7-dom php7-json && \
+    apk add --no-cache php7-pdo_pgsql php7-tokenizer php7-pecl-xdebug php7-mbstring libxml2-dev && \
+    apk add --no-cache php7-pecl-redis php7-openssl php7-simplexml && \
+    apk add --no-cache nodejs npm && \
+    sed -e 's/127\.0\.0\.1\:9000/0.0.0.0:9000/g' /etc/php7/php-fpm.d/www.conf >> /tmp/php-fpm.conf && \
+    mv /tmp/php-fpm.conf /etc/php7/php-fpm.d/www.conf && \
+    docker-php-ext-install pdo_pgsql && \
+    pecl install xdebug igbinary redis && \
+    docker-php-ext-enable xdebug igbinary redis && \
+    echo xdebug.mode=coverage > /usr/local/etc/php/conf.d/xdebug.ini && \
+    curl -sSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+WORKDIR /app
+# CMD ["php", "-S", "0.0.0.0:9000", "-t", "/app/public"]
+CMD ["php-fpm7", "-F"]
+EXPOSE 9000
