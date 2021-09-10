@@ -13,12 +13,12 @@ services:
     environment:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
 
-  redis:
-    container_name: elt_redis
-    image: redis:alpine
-    restart: always
-    ports:
-      - 6379:6379
+  # redis:
+  #   container_name: elt_redis
+  #   image: redis:alpine
+  #   restart: always
+  #   ports:
+  #     - 6379:6379
 
   nginx:
     container_name: elt_nginx
